@@ -28,6 +28,16 @@ def call_api(messages):
         messages=messages,
         temperature=0.0,
         )
+    elif os.environ['USE_SAMBANOVA_API_KEY'] == "True":
+        print("Using Sambanova API")
+        client = OpenAI(api_key=os.environ["SAMBANOVA_API_KEY"],
+                        base_url=os.environ["SAMBANOVA_API_URL"])
+
+        response = client.chat.completions.create(
+            model=os.environ["SAMBANOVA_MODEL_ID"],
+            messages=messages,
+            temperature=0.0,
+        )
     else:
         token_provider = get_bearer_token_provider(
                 AzureCliCredential(), "https://cognitiveservices.azure.com/.default"
